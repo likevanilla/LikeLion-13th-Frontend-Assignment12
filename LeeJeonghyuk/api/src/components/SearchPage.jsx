@@ -5,26 +5,39 @@ function SearchForm() {
   const [startDate, setStartDate] = useState("2023-01-01");
   const [endDate, setEndDate] = useState("2023-12-31");
   const [timeUnit, setTimeUnit] = useState("month");
-  const [keyword, setKeyword] = useState("아이폰,갤럭시");
+  const [keyword, setKeyword] = useState("자켓, 패딩, 코트");
 
   const { fetchTrendData } = useTrend();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const keywords = keyword
+    // 1️⃣ 콤마(,) 기준으로 분리하고 공백 제거
+    const keywords = String(keyword || "")
       .split(",")
       .map((k) => k.trim())
-      .filter((k) => k.length > 0);
+      .filter(Boolean);
+
+    if (keywords.length === 0) {
+      alert("키워드를 1개 이상 입력하세요.");
+      return;
+    }
+
+    // 2️⃣ 키워드 비교용 요청 바디 (category/keywords 엔드포인트)
     const requestBody = {
-      startDate,
-      endDate,
-      timeUnit,
-      keywordGroups: keywords.map((k) => ({
-        groupName: k,
-        keywords: [k],
-      })),
+      startDate: "2023-01-01",
+      endDate: "2023-12-31",
+      timeUnit: "month",
+      category: "50000000", // 문자열 하나
+      // TOOD: keywords 배열을 입력 받으면 들어가게 !!! 현재 목업임;;
+      keyword: [
+        { name: "자켓", param: ["자켓"] },
+        { name: "패딩", param: ["패딩"] },
+        { name: "코트", param: ["코트"] },
+      ],
+      device: "pc",
     };
+
     fetchTrendData(requestBody);
   };
 
@@ -45,6 +58,7 @@ function SearchForm() {
           <label htmlFor="endDate">종료일</label>
           <input
             id="endDate"
+            type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
           />
@@ -61,18 +75,16 @@ function SearchForm() {
             <option value="month">월간</option>
           </select>
         </div>
-
         <div className="form-group keywords-group">
-          <label htmlFor="keywords">키워드 (쉼표로 구분)</label>
+          <label htmlFor="keywords">키워드 (콤마로 구분)</label>
           <input
             id="keywords"
             type="text"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            placeholder="예: 아이폰,갤럭시"
+            placeholder="예: 자켓, 패딩, 코트"
           />
         </div>
-
         <div className="form-group button-group">
           <button type="submit" className="submit-button">
             분석하기
