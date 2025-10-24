@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useTrend } from "../context/TrendProvider";
+import { useTrend } from "../context/useTrend";
 
 function SearchForm() {
   const [startDate, setStartDate] = useState("2023-01-01");

@@ -1,5 +1,5 @@
 import React from "react";
-import { useTrend } from "../context/TrendProvider";
+import { useTrend } from "../context/useTrend";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
