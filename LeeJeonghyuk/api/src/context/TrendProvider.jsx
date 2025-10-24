@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useState } from "react";
 import axios from "axios";
 
 const TrendContext = createContext();
@@ -40,7 +40,7 @@ export function TrendProvider({ children }) {
       });
       console.log("REQUEST BODY:", requestBody);
 
-      // 2) 응답 상태 + 본문 전체 출력 (네이버가 이유를 써줍니다)
+      // 2) 응답 상태 + 본문 전체 출력 (네이버가 이유를 써줍니당)
       if (e.response) {
         console.log("STATUS:", e.response.status);
         console.log("RESPONSE DATA:", e.response.data);
@@ -73,10 +73,4 @@ export function TrendProvider({ children }) {
   );
 }
 
-export function useTrend() {
-  const context = useContext(TrendContext);
-  if (!context) {
-    throw new Error("Cannot use useTrend outside of TrendProvider");
-  }
-  return context;
-}
+export { TrendContext };

@@ -12,7 +12,6 @@ function SearchForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 1️⃣ 콤마(,) 기준으로 분리하고 공백 제거
     const keywords = String(keyword || "")
       .split(",")
       .map((k) => k.trim())
@@ -23,19 +22,17 @@ function SearchForm() {
       return;
     }
 
-    // 2️⃣ 키워드 비교용 요청 바디 (category/keywords 엔드포인트)
+    const keywordArray = keywords.map((k) => ({
+      name: k,
+      param: [k],
+    }));
+
     const requestBody = {
-      startDate: "2023-01-01",
-      endDate: "2023-12-31",
-      timeUnit: "month",
-      category: "50000000", // 문자열 하나
-      // TOOD: keywords 배열을 입력 받으면 들어가게 !!! 현재 목업임;;
-      keyword: [
-        { name: "자켓", param: ["자켓"] },
-        { name: "패딩", param: ["패딩"] },
-        { name: "코트", param: ["코트"] },
-      ],
-      device: "pc",
+      startDate,
+      endDate,
+      timeUnit,
+      category: "50000000", // 패션의류 카테고리 코드입니당
+      keyword: keywordArray,
     };
 
     fetchTrendData(requestBody);
